@@ -1,0 +1,25 @@
+{
+  "name": "sprite-3d",
+  "version": "1.0.0",
+  "description": "179 款原创高辨识度 3D 卡通精灵图鉴与 App 图标工坊 (Three.js Cel-Shading & Physical Animations)",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "start": "node serve.mjs",
+    "dev": "node serve.mjs",
+    "build": "node build.mjs"
+  },
+  "keywords": [
+    "threejs",
+    "3d",
+    "sprites",
+    "cel-shading",
+    "toon-shader",
+    "icon-generator",
+    "avatar-maker",
+    "webgl",
+    "creative-coding"
+  ],
+  "author": "atobelix",
+  "license": "MIT"
+}

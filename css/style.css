@@ -1,0 +1,335 @@
+        :root {
+            --bg-canvas: hsla(0, 0%, 100%, 1);
+
+            /* 绝对零饱和度纯中性文字 (绝无任何蓝色杂色) */
+            --text-title: hsla(0, 0%, 14%, 1);
+            --text-primary: hsla(0, 0%, 22%, 1);
+            --text-secondary: hsla(0, 0%, 42%, 1);
+            --text-muted: hsla(0, 0%, 62%, 1);
+
+            /* 纯中性背景与分层 (完全不依赖描边) */
+            --bg-surface: hsla(0, 0%, 100%, 1);
+            --bg-subtle: hsla(0, 0%, 96%, 1);
+            --bg-hover: hsla(0, 0%, 93%, 1);
+            --bg-pill-fill: hsla(0, 0%, 90%, 1);
+
+            /* 胶囊激活态 (温润深灰，避免纯黑) */
+            --btn-active-bg: hsla(0, 0%, 25%, 1);
+            --btn-active-text: hsla(0, 0%, 100%, 1);
+        }
+
+        /* 全局现代极简胶囊滚动条 (永久占位，平滑自适应，消除抖动) */
+        html {
+            overflow-y: scroll;
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: hsla(0, 0%, 0%, 0.16) transparent;
+        }
+
+        /* WebKit / Chromium 现代无边界微胶囊滚动条 */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 0%, 0.16);
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            transition: background-color 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: hsla(0, 0%, 0%, 0.32);
+        }
+        ::-webkit-scrollbar-thumb:active {
+            background-color: hsla(0, 0%, 0%, 0.45);
+        }
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        .custom-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: hsla(0, 0%, 0%, 0.14) transparent;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 0%, 0.14);
+            border-radius: 9999px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: hsla(0, 0%, 0%, 0.28);
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 25;
+        }
+        body.sculptor-active {
+            /* 保持滚动条永久占位且不产生页面偏移跳动 */
+        }
+        body.sculptor-active #webgl-canvas {
+            z-index: 45;
+        }
+
+        /* 精灵展示槽位 (现代 Bento 风格 8 列软方块卡片: 适度收敛、充沛呼吸感、大圆角、无描边、高级微阴影) */
+        .sprite-slot,
+        .cloud-slot {
+            position: relative;
+            background: #ffffff !important;
+            border: none !important;
+            border-radius: 20px !important;
+            box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.015) !important;
+            aspect-ratio: 1 / 1.08;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 8px 8px 8px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 155px;
+        }
+        .sprite-slot:hover,
+        .cloud-slot:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.02) !important;
+        }
+
+        /* 3D 精灵视口锚点 (保持正方比例，居中充盈，四周呼吸留白充足) */
+        .sprite-viewport {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            pointer-events: none;
+            background: transparent !important;
+        }
+
+        /* Bencho 风格底部药丸胶囊 (统一 11px Medium，高级克制) */
+        .sprite-pill-badge {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cloud-slot:hover .sprite-pill-badge {
+            background-color: hsla(0, 0%, 18%, 1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* 调研勾选态 (温和指示点，绝不用粗描边) */
+        .sprite-slot.survey-checked .survey-indicator {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* 选中态 (绝无任何描边、线框与假边框，纯净高阶弥散环境光微升) */
+        .cloud-slot.selected-slot {
+            transform: translateY(-4px) scale(1.01) !important;
+            box-shadow: 0 20px 42px -4px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+        }
+
+        /* 调研模式槽位 (无生硬描边，轻柔微阴影) */
+        body.survey-preview-mode .cloud-slot {
+            aspect-ratio: auto;
+            height: 154px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 12px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 4px 16px -2px hsla(0, 0%, 0%, 0.06);
+        }
+        body.survey-preview-mode .cloud-slot:hover {
+            background: hsla(0, 0%, 98%, 1);
+            box-shadow: 0 6px 20px -2px hsla(0, 0%, 0%, 0.09);
+        }
+        body.survey-preview-mode .cloud-slot.survey-checked {
+            background: hsla(0, 0%, 97%, 1);
+            box-shadow: 0 0 0 2px var(--btn-active-bg);
+        }
+        body.survey-preview-mode .cloud-label { display: none; }
+        body.survey-preview-mode .flagship-badge { display: none; }
+
+        .survey-card-meta { display: none; }
+        body.survey-preview-mode .survey-card-meta { display: flex; }
+        .survey-check-badge { display: none; }
+        body.survey-preview-mode .survey-check-badge { display: flex; }
+
+        /* 悬停名称轻量标签 (无边框纯净胶囊) */
+        .cloud-label {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%) translateY(3px);
+            opacity: 0;
+            transition: opacity 0.16s ease, transform 0.16s ease;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 20;
+            font-size: 10px;
+            color: var(--text-secondary);
+            background: hsla(0, 0%, 100%, 0.95);
+            border-radius: 9999px;
+            padding: 2px 9px;
+            box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.08);
+        }
+        .cloud-slot:hover .cloud-label,
+        body.show-all-labels .cloud-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 详情弹窗卡片 (无任何描边，高级纯白漫反射阴影) */
+        #sculptor-modal-card {
+            border-radius: 24px;
+            background-color: #ffffff;
+            box-shadow: 0 25px 65px -15px hsla(0, 0%, 0%, 0.12), 0 0 1px hsla(0, 0%, 0%, 0.08);
+            border: none;
+        }
+
+        /* 胶囊按钮标准定义 (两端绝对正半圆，无描边) */
+        .btn-capsule {
+            border-radius: 9999px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        /* 胶囊滑块组件 (无描边，依靠纯浅灰底与填充层呈现自然阶梯层级) */
+        .pill-slider {
+            position: relative;
+            height: 35px;
+            border-radius: 12px;
+            background-color: var(--bg-subtle);
+            border: none;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 12px;
+            padding-right: 12px;
+            cursor: ew-resize;
+            user-select: none;
+            transition: background-color 0.15s ease;
+        }
+        .pill-slider:hover {
+            background-color: hsla(0, 0%, 94%, 1);
+        }
+        .pill-slider.dragging {
+            background-color: hsla(0, 0%, 92%, 1);
+        }
+        .pill-slider-fill {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background-color: var(--bg-pill-fill);
+            pointer-events: none;
+            border-top-left-radius: 11px;
+            border-bottom-left-radius: 11px;
+            transition: width 0.04s linear;
+        }
+        .pill-slider-cursor {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5px;
+            height: 14px;
+            border-radius: 9999px;
+            background-color: hsla(0, 0%, 60%, 1);
+        }
+        .pill-slider-label {
+            position: relative;
+            z-index: 2;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-primary);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .pill-slider-val {
+            position: relative;
+            z-index: 2;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-title);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* 色板圆盘 (无描边，纯净微阴影) */
+        .pal-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 9999px;
+            border: none;
+            flex-shrink: 0;
+            cursor: pointer;
+            box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.10);
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+        .pal-btn:hover {
+            transform: scale(1.14);
+            box-shadow: 0 3px 8px hsla(0, 0%, 0%, 0.15);
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 3px; }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: hsla(0, 0%, 0%, 0.12);
+            border-radius: 9999px;
+        }
+
+        /* 居中视野安全区 (现代 Bento 风格 8 列清爽呼吸感排布，充沛留白，左右留出充裕安全边距) */
+        #cloud-grid {
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            gap: 22px;
+        }
+        @media (max-width: 1400px) {
+            #cloud-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 20px; }
+        }
+        @media (max-width: 1220px) {
+            #cloud-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
+        }
+        @media (max-width: 1024px) {
+            #cloud-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+        }
+        @media (max-width: 820px) {
+            #cloud-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+        }
+        @media (max-width: 640px) {
+            #cloud-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+        }
+        @media (max-width: 480px) {
+            #cloud-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        }
