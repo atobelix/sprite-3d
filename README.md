@@ -1,5 +1,9 @@
 # SPRITE.3D · 179 款原创高辨识度 3D 精灵图鉴与 App 图标工坊
 
+<p align="center">
+  <img src="./assets/banner.svg" alt="SPRITE.3D - 179 Original 3D Sprites & Icon Workshop" width="100%">
+</p>
+
 [![Three.js](https://img.shields.io/badge/Three.js-r128-black?logo=three.js)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![WebGL](https://img.shields.io/badge/WebGL-2.0-orange?logo=webgl)](https://get.webgl.org/)
