@@ -2142,52 +2142,30 @@ export function buildOriginalSpriteMesh(def, mainMat, accentMat) {
                     group.add(seed);
                 });
             } else if (sp === 'foodAvocado') {
-                // 专属写实分色：深墨绿厚果皮 + 鲜嫩奶黄绿果肉 + 焦糖高光立体大圆核
-                const skinMat = createCloudToonMaterial('#1A4D2E', '#0D2B1A', 0.22);
-                const fleshMat = createCloudToonMaterial('#D9F99D', '#BEF264', 0.18);
-                const pitMat = createCloudToonMaterial('#78350F', '#451A03', 0.26);
+                const avoShape = new THREE.Shape();
+                avoShape.moveTo(0, 0.60);
+                avoShape.bezierCurveTo(0.34, 0.60, 0.58, 0.06, 0.52, -0.34);
+                avoShape.bezierCurveTo(0.46, -0.62, -0.46, -0.62, -0.52, -0.34);
+                avoShape.bezierCurveTo(-0.58, 0.06, -0.34, 0.60, 0, 0.60);
 
-                // 1. 外层深墨绿糙面厚果皮（饱满梨形壳托）
-                const skinShape = new THREE.Shape();
-                skinShape.moveTo(0, 0.62);
-                skinShape.bezierCurveTo(0.38, 0.62, 0.60, 0.10, 0.54, -0.32);
-                skinShape.bezierCurveTo(0.48, -0.66, -0.48, -0.66, -0.54, -0.32);
-                skinShape.bezierCurveTo(-0.60, 0.10, -0.38, 0.62, 0, 0.62);
-
-                const skinGeo = new THREE.ExtrudeGeometry(skinShape, {
-                    depth: 0.28, bevelEnabled: true, bevelSegments: 12, steps: 1, bevelSize: 0.11, bevelThickness: 0.13
+                const avoGeo = new THREE.ExtrudeGeometry(avoShape, {
+                    depth: 0.22, bevelEnabled: true, bevelSegments: 10, steps: 1, bevelSize: 0.10, bevelThickness: 0.11
                 });
-                skinGeo.center();
-                const skinMesh = new THREE.Mesh(skinGeo, skinMat);
-                skinMesh.position.z = -0.04;
-                group.add(skinMesh);
+                avoGeo.center();
+                group.add(new THREE.Mesh(avoGeo, mainMat));
 
-                // 2. 内层鲜嫩奶黄绿平滑切面果肉
-                const fleshShape = new THREE.Shape();
-                fleshShape.moveTo(0, 0.56);
-                fleshShape.bezierCurveTo(0.33, 0.56, 0.52, 0.08, 0.46, -0.28);
-                fleshShape.bezierCurveTo(0.42, -0.58, -0.42, -0.58, -0.46, -0.28);
-                fleshShape.bezierCurveTo(-0.52, 0.08, -0.33, 0.56, 0, 0.56);
-
-                const fleshGeo = new THREE.ExtrudeGeometry(fleshShape, {
-                    depth: 0.12, bevelEnabled: true, bevelSegments: 8, steps: 1, bevelSize: 0.04, bevelThickness: 0.05
-                });
-                fleshGeo.center();
-                const fleshMesh = new THREE.Mesh(fleshGeo, fleshMat);
-                fleshMesh.position.z = 0.08;
-                group.add(fleshMesh);
-
-                // 3. 腹部圆润高耸的焦糖色反光大牛油果核（半球凸起）
-                const pit = new THREE.Mesh(SHARED_GEOS.sphere, pitMat);
-                pit.position.set(0, -0.16, 0.18);
-                pit.scale.set(0.32 * featS, 0.36 * featS, 0.26 * featS);
+                // 腹部凸起的浑圆3D牛油果核
+                const pit = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                pit.position.set(0.04, -0.20, 0.18);
+                pit.scale.set(0.28 * featS, 0.28 * featS, 0.22 * featS);
                 group.add(pit);
 
-                // 果核右上侧一道灵动的纯白反光高光点
-                const glint = new THREE.Mesh(SHARED_GEOS.sphere, fleshMat);
-                glint.position.set(0.08, -0.06, 0.34);
-                glint.scale.setScalar(0.065 * featS);
-                group.add(glint);
+                // 顶部小绿叶
+                const leaf = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                leaf.position.set(0.16, 0.66, 0);
+                leaf.rotation.z = -0.5;
+                leaf.scale.set(0.18 * featS, 0.09 * featS, 0.08 * featS);
+                group.add(leaf);
             } else if (sp === 'foodMushroom') {
                 // 专属分色：伞盖红+菌柄白+波点白
                 const capMat   = createCloudToonMaterial('#DC2626', '#991B1B', 0.22);
@@ -2237,41 +2215,43 @@ export function buildOriginalSpriteMesh(def, mainMat, accentMat) {
                     group.add(dot);
                 });
             } else if (sp === 'foodKiwi') {
-                // 清甜奇异果：棕褐毛茸厚果皮 + 鲜嫩翠绿切面果肉 + 奶油白圆芯 + 环形黑芝麻籽
-                const skinMat = createCloudToonMaterial('#78350F', '#451A03', 0.20);
-                const fleshMat = createCloudToonMaterial('#84CC16', '#4D7C0F', 0.18);
-                const coreMat = createCloudToonMaterial('#FEF9C3', '#FEF08A', 0.16);
-                const seedMat = createCloudToonMaterial('#1E293B', '#0F172A', 0.22);
+                // 清甜奇异果 Kiwi (饱满切面果肉 + 外果皮边圈 + 椭圆果芯 + 放射状萌趣小籽)
+                const kiwiShape = new THREE.Shape();
+                kiwiShape.absellipse(0, 0, 0.52, 0.56, 0, Math.PI * 2, false, 0);
+                const kiwiGeo = new THREE.ExtrudeGeometry(kiwiShape, {
+                    depth: 0.20, bevelEnabled: true, bevelSegments: 10, steps: 1, bevelSize: 0.08, bevelThickness: 0.09
+                });
+                kiwiGeo.center();
+                group.add(new THREE.Mesh(kiwiGeo, mainMat));
 
-                // 1. 棕褐色圆润外壳托（对半切开的果皮）
-                const shell = new THREE.Mesh(SHARED_GEOS.sphere, skinMat);
-                shell.scale.set(0.62, 0.58, 0.44);
-                shell.position.z = -0.06;
-                group.add(shell);
+                // 外层深色果皮圆环边圈
+                const rim = new THREE.Mesh(new THREE.TorusGeometry(0.55 * featS, 0.055 * featS, 12, 36), accentMat);
+                rim.position.z = 0.06;
+                group.add(rim);
 
-                // 2. 鲜嫩多汁的翠绿切面果肉大圆盘
-                const slice = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.58, 0.16, 36), fleshMat);
-                slice.rotation.x = Math.PI / 2;
-                slice.position.z = 0.08;
-                group.add(slice);
-
-                // 3. 中央淡奶油黄白果芯（椭圆软核）
-                const core = new THREE.Mesh(SHARED_GEOS.sphere, coreMat);
-                core.position.set(0, -0.06, 0.18);
-                core.scale.set(0.18 * featS, 0.24 * featS, 0.08 * featS);
+                // 中央稍偏下方的淡奶油白果芯
+                const core = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                core.position.set(0, -0.10, 0.14);
+                core.scale.set(0.16 * featS, 0.22 * featS, 0.08 * featS);
                 group.add(core);
 
-                // 4. 环绕果芯呈放射状排布的一圈黑芝麻微型果籽（10颗）
-                for (let i = 0; i < 10; i++) {
-                    const ang = (i / 10) * Math.PI * 2;
-                    const rx = Math.cos(ang) * 0.28;
-                    const ry = -0.06 + Math.sin(ang) * 0.32;
-                    const seed = new THREE.Mesh(SHARED_GEOS.sphere, seedMat);
-                    seed.position.set(rx, ry, 0.18);
-                    seed.scale.set(0.024 * featS, 0.040 * featS, 0.022 * featS);
-                    seed.rotation.z = ang;
+                // 环绕果芯的放射状细巧小黑籽 (8颗，避开上方眼睛区)
+                for (let i = 0; i < 8; i++) {
+                    const ang = -0.30 * Math.PI + (i / 7) * 1.6 * Math.PI;
+                    const rx = Math.cos(ang) * 0.27;
+                    const ry = -0.10 + Math.sin(ang) * 0.29;
+                    const seed = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                    seed.position.set(rx, ry, 0.16);
+                    seed.scale.set(0.024 * featS, 0.038 * featS, 0.020 * featS);
+                    seed.rotation.z = ang + Math.PI / 2;
                     group.add(seed);
                 }
+
+                // 顶部小果蒂
+                const stem = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                stem.position.set(0, 0.64, 0);
+                stem.scale.set(0.11 * featS, 0.06 * featS, 0.06 * featS);
+                group.add(stem);
             } else if (sp === 'foodEggplant') {
                 const egPts = [
                     new THREE.Vector2(0.01, -0.56),
@@ -6596,543 +6576,99 @@ export function buildOriginalSpriteMesh(def, mainMat, accentMat) {
 
             // #177 棋后 Chess Queen
             } else if (sp === 'gameChessQueen') {
-                // 宽底座
-                const qBase = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.44, 0.10, 24), mainMat);
-                qBase.position.y = -0.52;
-                group.add(qBase);
-                // 下段腰座
-                const qWaist = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.34, 0.26, 20), mainMat);
-                qWaist.position.y = -0.37;
-                group.add(qWaist);
-                // 细束腰
-                const qNeck = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 0.18, 18), mainMat);
-                qNeck.position.y = -0.17;
-                group.add(qNeck);
-                // 中部球形鼓身
-                const qBelly = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                qBelly.scale.set(0.26 * featS, 0.22 * featS, 0.26 * featS);
-                qBelly.position.y = 0.02;
-                group.add(qBelly);
-                // 上颈
-                const qNeckTop = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.18, 16), mainMat);
-                qNeckTop.position.y = 0.22;
-                group.add(qNeckTop);
-                // 顶部小球
-                const qHead = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                qHead.scale.setScalar(0.18 * featS);
-                qHead.position.y = 0.38;
-                group.add(qHead);
-                // 五芒星冠冕
-                const qCrown = new THREE.Mesh(SHARED_GEOS.starBadge, accentMat);
-                qCrown.position.y = 0.52;
-                qCrown.scale.setScalar(0.42 * featS);
-                group.add(qCrown);
-                // 饱满气囊球体
-                const balloon = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                balloon.scale.set(0.54 * featS, 0.68 * featS, 0.54 * featS);
-                balloon.position.y = 0.14;
-                group.add(balloon);
-                // 六色竖条纹
-                for (let i = 0; i < 6; i++) {
-                    const ang = (i / 6) * Math.PI * 2;
-                    const stripe = new THREE.Mesh(createRoundedRectExtrude(0.06 * featS, 0.82 * featS, 0.04, 0.03, 0.01), accentMat);
-                    stripe.position.set(Math.cos(ang) * 0.50, 0.14, Math.sin(ang) * 0.50);
-                    stripe.rotation.y = ang;
-                    group.add(stripe);
-                }
-                // 连接绳
-                for (let i = 0; i < 4; i++) {
-                    const ang = (i / 4) * Math.PI * 2 + Math.PI / 4;
-                    const rope = new THREE.Mesh(createCapsuleGeometry(0.014 * featS, 0.36 * featS, 6), accentMat);
-                    rope.position.set(Math.cos(ang) * 0.18, -0.30, Math.sin(ang) * 0.18);
-                    rope.rotation.z = Math.cos(ang) * 0.30;
-                    rope.rotation.x = Math.sin(ang) * 0.30;
-                    group.add(rope);
-                }
-                // 藤编吊篮
-                const basket = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.18, 0.18, 10), accentMat);
-                basket.position.y = -0.50;
-                group.add(basket);
-                // 双侧凹腰共鸣箱
-                const vBodyShape = new THREE.Shape();
-                vBodyShape.moveTo(0, -0.54);
-                vBodyShape.bezierCurveTo(0.38, -0.54, 0.44, -0.28, 0.42, -0.08);
-                vBodyShape.bezierCurveTo(0.28, 0.0, 0.0, 0.0, 0.0, -0.02);
-                vBodyShape.bezierCurveTo(0.0, 0.0, -0.28, 0.0, -0.42, -0.08);
-                vBodyShape.bezierCurveTo(-0.44, -0.28, -0.38, -0.54, 0, -0.54);
-                vBodyShape.moveTo(0, -0.02);
-                vBodyShape.bezierCurveTo(-0.14, 0.0, -0.30, 0.10, -0.44, 0.08);
-                vBodyShape.bezierCurveTo(-0.46, -0.22, -0.38, -0.52, 0, -0.54);
-                vBodyShape.bezierCurveTo(0.38, -0.52, 0.46, -0.22, 0.44, 0.08);
-                vBodyShape.bezierCurveTo(0.30, 0.10, 0.14, 0.10, 0.0, 0.08);
-                vBodyShape.closePath();
-                const vBodyGeo = new THREE.ExtrudeGeometry(vBodyShape, {
-                    depth: 0.14, bevelEnabled: true, bevelSegments: 6, steps: 1, bevelSize: 0.04, bevelThickness: 0.04
-                });
-                vBodyGeo.center();
-                group.add(new THREE.Mesh(vBodyGeo, mainMat));
-                // 琴颈
-                const vNeck = new THREE.Mesh(createRoundedRectExtrude(0.09 * featS, 0.42 * featS, 0.06, 0.08, 0.02), mainMat);
-                vNeck.position.set(0, 0.46, 0);
-                group.add(vNeck);
-                // 卷轴头
-                const vScroll = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                vScroll.scale.set(0.10 * featS, 0.10 * featS, 0.06 * featS);
-                vScroll.position.set(0, 0.72, 0);
-                group.add(vScroll);
-                // f形音孔
-                [-0.16, 0.16].forEach((fx) => {
-                    const fhole = new THREE.Mesh(createCapsuleGeometry(0.024 * featS, 0.16 * featS, 6), accentMat);
-                    fhole.position.set(fx, -0.04, 0.09);
-                    group.add(fhole);
-                });
-                // 大圆杯身
-                const btCup = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.30, 0.78, 28), mainMat);
-                btCup.position.y = -0.14;
-                group.add(btCup);
-                // 底部沉淀的黑色珍珠
-                for (let i = 0; i < 7; i++) {
-                    const ang = (i / 7) * Math.PI * 2;
-                    const pearl = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    pearl.position.set(Math.cos(ang) * 0.18, -0.44, Math.sin(ang) * 0.18);
-                    pearl.scale.setScalar(0.08 * featS);
-                    group.add(pearl);
-                }
-                // 封口薄膜
-                const btLid = new THREE.Mesh(new THREE.CylinderGeometry(0.40, 0.40, 0.04, 28), accentMat);
-                btLid.position.y = 0.26;
-                group.add(btLid);
-                // 粗壮吸管
-                const btStraw = new THREE.Mesh(createCapsuleGeometry(0.042 * featS, 0.72 * featS, 10), accentMat);
-                btStraw.position.set(0.18, 0.62, 0);
-                btStraw.rotation.z = -0.14;
-                group.add(btStraw);
-                // 圆润荷叶底座
-                const ltLeaf = new THREE.Mesh(new THREE.CylinderGeometry(0.60, 0.56, 0.06, 32), mainMat);
-                ltLeaf.position.y = -0.52;
-                group.add(ltLeaf);
-                // 外层大花瓣
-                for (let i = 0; i < 6; i++) {
-                    const ang = (i / 6) * Math.PI * 2;
-                    const petal = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                    petal.position.set(Math.cos(ang) * 0.30, -0.14, Math.sin(ang) * 0.30);
-                    petal.scale.set(0.14 * featS, 0.26 * featS, 0.12 * featS);
-                    petal.rotation.y = ang;
-                    petal.rotation.z = Math.cos(ang) * 0.40 + 0.20;
-                    petal.rotation.x = Math.sin(ang) * 0.40;
-                    group.add(petal);
-                }
-                // 内层小花瓣
-                for (let i = 0; i < 4; i++) {
-                    const ang = (i / 4) * Math.PI * 2 + Math.PI / 8;
-                    const inner = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    inner.position.set(Math.cos(ang) * 0.14, 0.14, Math.sin(ang) * 0.14);
-                    inner.scale.set(0.10 * featS, 0.22 * featS, 0.09 * featS);
-                    inner.rotation.y = ang;
-                    inner.rotation.z = Math.cos(ang) * 0.20 + 0.10;
-                    group.add(inner);
-                }
-                // 金黄莲蓬中心
-                const ltPod = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                ltPod.scale.set(0.16 * featS, 0.14 * featS, 0.16 * featS);
-                ltPod.position.y = 0.26;
-                group.add(ltPod);
-                // 饱满圆角正方体骰子
-                const diceGeo = createRoundedRectExtrude(0.76, 0.76, 0.76, 0.76, 0.14);
-                diceGeo.center();
-                group.add(new THREE.Mesh(diceGeo, mainMat));
-                // 点数
-                [
-                    [-0.18, 0.18, 0.40], [0.0, 0.0, 0.40], [0.18, -0.18, 0.40],
-                    [0.0, 0.40, 0.0],
-                    [0.40, 0.14, -0.14], [0.40, -0.14, 0.14]
-                ].forEach(([dx, dy, dz]) => {
-                    const dot = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    dot.position.set(dx, dy, dz);
-                    dot.scale.setScalar(0.07 * featS);
-                    group.add(dot);
-                });
+                // 1. 经典车旋双层阶梯底座
+                const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.48, 0.10, 32), mainMat);
+                baseBottom.position.y = -0.52;
+                group.add(baseBottom);
+                const baseRing = new THREE.Mesh(new THREE.TorusGeometry(0.42 * featS, 0.045 * featS, 12, 32), accentMat);
+                baseRing.rotation.x = Math.PI / 2;
+                baseRing.position.y = -0.47;
+                group.add(baseRing);
 
-            // #183 圣代冰淇淋 Ice Cream Sundae
+                // 2. 优美收腰琴柱体（凹曲下身段）
+                const waistPts = [
+                    new THREE.Vector2(0.01, -0.45),
+                    new THREE.Vector2(0.34, -0.45),
+                    new THREE.Vector2(0.24, -0.32),
+                    new THREE.Vector2(0.16, -0.16),
+                    new THREE.Vector2(0.14, -0.04),
+                    new THREE.Vector2(0.18, 0.08),
+                    new THREE.Vector2(0.24, 0.16),
+                    new THREE.Vector2(0.01, 0.16)
+                ];
+                const waistGeo = new THREE.LatheGeometry(waistPts, 32);
+                group.add(new THREE.Mesh(waistGeo, mainMat));
+
+                // 3. 黄金颈圈环 (Accent)
+                const neckRing = new THREE.Mesh(new THREE.TorusGeometry(0.19 * featS, 0.04 * featS, 12, 32), accentMat);
+                neckRing.rotation.x = Math.PI / 2;
+                neckRing.position.y = 0.16;
+                group.add(neckRing);
+
+                // 4. 女王头部球体 (放置双眼的自然承载面)
+                const qHead = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
+                qHead.scale.set(0.25 * featS, 0.23 * featS, 0.25 * featS);
+                qHead.position.y = 0.32;
+                group.add(qHead);
+
+                // 5. 优雅皇冠底托圈
+                const crownBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.18, 0.06, 24), accentMat);
+                crownBase.position.y = 0.46;
+                group.add(crownBase);
+
+                // 6. 六瓣外展金冠冕尖角
+                for (let i = 0; i < 6; i++) {
+                    const ang = (i / 6) * Math.PI * 2;
+                    const spike = new THREE.Mesh(new THREE.ConeGeometry(0.042 * featS, 0.14 * featS, 8), accentMat);
+                    spike.position.set(Math.cos(ang) * 0.20, 0.54, Math.sin(ang) * 0.20);
+                    spike.rotation.z = -Math.cos(ang) * 0.35;
+                    spike.rotation.x = Math.sin(ang) * 0.35;
+                    group.add(spike);
+                }
+
+                // 7. 皇冠顶心珍珠圆珠 (Coronet Pearl)
+                const pearl = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+                pearl.scale.setScalar(0.085 * featS);
+                pearl.position.y = 0.54;
+                group.add(pearl);
             } else if (sp === 'foodIceCreamSundae') {
-                // 高脚杯底座
-                const icBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.08, 20), accentMat);
-                icBase.position.y = -0.56;
+                // 1. 经典优雅高脚郁金香玻璃杯
+                const icBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 0.08, 24), accentMat);
+                icBase.position.y = -0.54;
                 group.add(icBase);
-                const icStem = new THREE.Mesh(createCapsuleGeometry(0.05 * featS, 0.26 * featS, 10), accentMat);
-                icStem.position.y = -0.42;
+                const icStem = new THREE.Mesh(createCapsuleGeometry(0.05 * featS, 0.24 * featS, 10), accentMat);
+                icStem.position.y = -0.40;
                 group.add(icStem);
-                const icCup = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.18, 0.44, 24), accentMat);
-                icCup.position.y = -0.16;
+                const icCup = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.20, 0.46, 28), accentMat);
+                icCup.position.y = -0.14;
                 group.add(icCup);
-                // 双球冰淇淋
-                [[-0.08, 0.14], [0.10, 0.36]].forEach(([ex, ey]) => {
+
+                // 2. 双球绵密香甜冰淇淋
+                [[-0.08, 0.16, 0.04], [0.10, 0.36, -0.02]].forEach(([ex, ey, ez]) => {
                     const scoop = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                    scoop.position.set(ex, ey, 0);
-                    scoop.scale.set(0.26 * featS, 0.24 * featS, 0.26 * featS);
+                    scoop.position.set(ex, ey, ez);
+                    scoop.scale.set(0.28 * featS, 0.25 * featS, 0.28 * featS);
                     group.add(scoop);
                 });
-                // 顶部鲜红樱桃
+
+                // 3. 顶部红宝石大樱桃
                 const icCherry = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                icCherry.position.set(0.08, 0.60, 0);
-                icCherry.scale.setScalar(0.09 * featS);
+                icCherry.position.set(0.08, 0.62, 0.06);
+                icCherry.scale.setScalar(0.095 * featS);
                 group.add(icCherry);
-                // 樱桃柄
-                const icStalk = new THREE.Mesh(createCapsuleGeometry(0.014 * featS, 0.14 * featS, 6), accentMat);
-                icStalk.position.set(0.08, 0.72, 0);
+
+                // 弯曲细长樱桃柄
+                const icStalk = new THREE.Mesh(createCapsuleGeometry(0.015 * featS, 0.14 * featS, 6), accentMat);
+                icStalk.position.set(0.12, 0.74, 0.06);
+                icStalk.rotation.z = -0.3;
                 group.add(icStalk);
-                // 夹心饼干棒
-                const icWafer = new THREE.Mesh(createRoundedRectExtrude(0.06 * featS, 0.42 * featS, 0.03, 0.04, 0.01), accentMat);
-                icWafer.position.set(-0.14, 0.44, 0.10);
-                icWafer.rotation.z = 0.26;
+
+                // 4. 倾斜插入的香脆华夫饼干棒
+                const icWafer = new THREE.Mesh(createRoundedRectExtrude(0.055 * featS, 0.44 * featS, 0.03, 0.04, 0.01), accentMat);
+                icWafer.position.set(-0.16, 0.42, 0.12);
+                icWafer.rotation.z = 0.28;
                 group.add(icWafer);
-                // 椭圆形岩石冰晶核心
-                const cCore = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-                cCore.scale.set(0.26 * featS, 0.20 * featS, 0.22 * featS);
-                cCore.position.set(0.14, 0.14, 0);
-                group.add(cCore);
-                // 蓝白发光彗尾
-                const tailPts = [
-                    new THREE.Vector3(0.14, 0.14, 0),
-                    new THREE.Vector3(-0.04, -0.04, 0),
-                    new THREE.Vector3(-0.26, -0.28, 0),
-                    new THREE.Vector3(-0.52, -0.56, 0)
-                ];
-                [0.09, 0.06, 0.04].forEach((r, i) => {
-                    const tailSeg = new THREE.Mesh(
-                        new THREE.TubeGeometry(new THREE.CatmullRomCurve3(tailPts.slice(i, i + 2)), 8, r * featS, 10, false),
-                        accentMat);
-                    group.add(tailSeg);
-                });
-                // 主光晕
-                const cGlow = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                cGlow.scale.setScalar(0.34 * featS);
-                cGlow.position.set(0.14, 0.14, 0);
-                group.add(cGlow);
-
-            // #185 椒盐卷饼 Pretzel
-            } else if (sp === 'foodPretzel') {
-                // 两侧圆形大环
-                [-0.26, 0.26].forEach((rx) => {
-                    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.085 * featS, 10, 24), mainMat);
-                    ring.position.set(rx, 0.06, 0);
-                    group.add(ring);
-                });
-                // 中间交叉扭结
-                const pzCross1 = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.52 * featS, 10), mainMat);
-                pzCross1.position.set(0, 0.06, 0);
-                pzCross1.rotation.z = 0.90;
-                group.add(pzCross1);
-                const pzCross2 = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.52 * featS, 10), mainMat);
-                pzCross2.position.set(0, 0.06, 0);
-                pzCross2.rotation.z = -0.90;
-                group.add(pzCross2);
-                // 下两条粗尾
-                [-0.18, 0.18].forEach((tx) => {
-                    const tail = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.26 * featS, 8), mainMat);
-                    tail.position.set(tx, -0.30, 0);
-                    tail.rotation.z = tx > 0 ? 0.26 : -0.26;
-                    group.add(tail);
-                });
-                // 表面粗盐粒
-                for (let i = 0; i < 8; i++) {
-                    const ang = (i / 8) * Math.PI * 2;
-                    const salt = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    salt.position.set(Math.cos(ang) * 0.20, Math.sin(ang) * 0.10 + 0.06, 0.09);
-                    salt.scale.setScalar(0.03 * featS);
-                    group.add(salt);
-                }
-                // 菱形折叠翅身（主体）
-                const ocBodyShape = new THREE.Shape();
-                ocBodyShape.moveTo(0, 0.28);
-                ocBodyShape.lineTo(0.44, -0.08);
-                ocBodyShape.lineTo(0.0, -0.26);
-                ocBodyShape.lineTo(-0.44, -0.08);
-                ocBodyShape.closePath();
-                const ocBodyGeo = new THREE.ExtrudeGeometry(ocBodyShape, {
-                    depth: 0.14, bevelEnabled: true, bevelSegments: 4, steps: 1, bevelSize: 0.04, bevelThickness: 0.04
-                });
-                ocBodyGeo.center();
-                group.add(new THREE.Mesh(ocBodyGeo, mainMat));
-                // 展开的两侧翅翼
-                [-1, 1].forEach((side) => {
-                    const wingShape = new THREE.Shape();
-                    wingShape.moveTo(0, 0);
-                    wingShape.lineTo(side * 0.52, 0.18);
-                    wingShape.lineTo(side * 0.60, 0.0);
-                    wingShape.lineTo(side * 0.44, -0.22);
-                    wingShape.closePath();
-                    const wingGeo = new THREE.ExtrudeGeometry(wingShape, {
-                        depth: 0.04, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.02, bevelThickness: 0.02
-                    });
-                    wingGeo.center();
-                    const wing = new THREE.Mesh(wingGeo, mainMat);
-                    wing.position.set(side * 0.26, 0.04, 0);
-                    group.add(wing);
-                });
-                // 细长颈部
-                const ocNeck = new THREE.Mesh(createCapsuleGeometry(0.04 * featS, 0.36 * featS, 8), accentMat);
-                ocNeck.position.set(0.08, 0.32, 0);
-                ocNeck.rotation.z = -0.52;
-                group.add(ocNeck);
-                // 小头部
-                const ocHead = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                ocHead.position.set(0.22, 0.52, 0);
-                ocHead.scale.setScalar(0.09 * featS);
-                group.add(ocHead);
-                // 尾羽单尖
-                const ocTail = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.26 * featS, 6), accentMat);
-                ocTail.position.set(-0.08, -0.26, 0);
-                ocTail.rotation.z = 0.44;
-                group.add(ocTail);
-                // 铸铁马蹄形底座
-                const msBase = new THREE.Mesh(createRoundedRectExtrude(0.68, 0.18, 0.44, 0.22, 0.08), mainMat);
-                msBase.position.y = -0.54;
-                group.add(msBase);
-                // 金属弓形镜臂
-                const msArmPts = [
-                    new THREE.Vector3(0, -0.42, 0.10),
-                    new THREE.Vector3(0, -0.10, 0.08),
-                    new THREE.Vector3(-0.08, 0.14, 0.04),
-                    new THREE.Vector3(0, 0.44, 0)
-                ];
-                const msArm = new THREE.Mesh(
-                    new THREE.TubeGeometry(new THREE.CatmullRomCurve3(msArmPts), 16, 0.07 * featS, 12, false),
-                    mainMat);
-                group.add(msArm);
-                // 载物台
-                const msStage = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.05, 20), accentMat);
-                msStage.position.set(0, -0.14, 0.08);
-                group.add(msStage);
-                // 下节粗目镜镜筒
-                const msTube1 = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.26, 16), accentMat);
-                msTube1.position.set(0, 0.60, 0);
-                group.add(msTube1);
-                // 上节细目镜镜筒
-                const msTube2 = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.22, 14), mainMat);
-                msTube2.position.set(0, 0.80, 0);
-                group.add(msTube2);
-                // 目镜镜头
-                const msEye = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.07, 0.07, 14), accentMat);
-                msEye.position.set(0, 0.94, 0);
-                group.add(msEye);
-                // 白色菌柄
-                const shStem = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.48, 20), mainMat);
-                shStem.position.y = -0.36;
-                group.add(shStem);
-                // 裙状菌褶
-                const shSkirt = new THREE.Mesh(new THREE.ConeGeometry(0.36, 0.12, 20, 1, true), accentMat);
-                shSkirt.position.y = -0.14;
-                group.add(shSkirt);
-                // 宽大圆润的红色伞形菌盖
-                const capPts = [
-                    new THREE.Vector2(0.01, 0.0),
-                    new THREE.Vector2(0.44, 0.08),
-                    new THREE.Vector2(0.54, 0.26),
-                    new THREE.Vector2(0.42, 0.42),
-                    new THREE.Vector2(0.14, 0.52),
-                    new THREE.Vector2(0.01, 0.56)
-                ];
-                const shCap = new THREE.Mesh(new THREE.LatheGeometry(capPts, 32), mainMat);
-                shCap.position.y = -0.04;
-                group.add(shCap);
-                // 白色圆点斑纹
-                [[0.0, 0.52, 0.18], [0.26, 0.42, 0.26], [-0.26, 0.42, 0.26],
-                 [0.40, 0.28, 0.14], [-0.40, 0.28, 0.14], [0.0, 0.26, 0.56]].forEach(([dx, dy, dz]) => {
-                    const spot = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    spot.position.set(dx, dy, dz);
-                    spot.scale.setScalar(0.08 * featS);
-                    group.add(spot);
-                });
-                // 圆润锥形箭身
-                const rkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.76, 24), mainMat);
-                rkBody.position.y = -0.04;
-                group.add(rkBody);
-                // 圆头鼻锥
-                const rkNose = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.42, 24), accentMat);
-                rkNose.position.y = 0.57;
-                group.add(rkNose);
-                // 三片尾翼
-                for (let i = 0; i < 3; i++) {
-                    const ang = (i / 3) * Math.PI * 2;
-                    const finShape = new THREE.Shape();
-                    finShape.moveTo(0, 0);
-                    finShape.lineTo(0.28, -0.26);
-                    finShape.lineTo(0.08, -0.42);
-                    finShape.lineTo(0, -0.38);
-                    finShape.closePath();
-                    const finGeo = new THREE.ExtrudeGeometry(finShape, {
-                        depth: 0.04, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.02, bevelThickness: 0.02
-                    });
-                    finGeo.center();
-                    const fin = new THREE.Mesh(finGeo, accentMat);
-                    fin.position.set(Math.cos(ang) * 0.24, -0.38, Math.sin(ang) * 0.24);
-                    fin.rotation.y = ang;
-                    group.add(fin);
-                }
-                // 尾喷火焰
-                const rkFlame = new THREE.Mesh(new THREE.ConeGeometry(0.20, 0.36, 18), accentMat);
-                rkFlame.position.y = -0.60;
-                rkFlame.rotation.z = Math.PI;
-                group.add(rkFlame);
-                // 箭身星形徽章
-                const rkBadge = new THREE.Mesh(SHARED_GEOS.starBadge, accentMat);
-                rkBadge.position.set(0, 0.02, 0.28);
-                rkBadge.scale.setScalar(0.28 * featS);
-                group.add(rkBadge);
-                // 椭圆鼓形灯身
-                const jlPts = [
-                    new THREE.Vector2(0.01, 0.0),
-                    new THREE.Vector2(0.30, 0.04),
-                    new THREE.Vector2(0.38, 0.22),
-                    new THREE.Vector2(0.36, 0.42),
-                    new THREE.Vector2(0.24, 0.56),
-                    new THREE.Vector2(0.01, 0.62)
-                ];
-                const jlBody = new THREE.Mesh(new THREE.LatheGeometry(jlPts, 32), mainMat);
-                jlBody.position.y = -0.26;
-                group.add(jlBody);
-                // 竹骨横环
-                [-0.10, 0.08, 0.26, 0.42].forEach((hy) => {
-                    const rib = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.016 * featS, 6, 24), accentMat);
-                    rib.rotation.x = Math.PI / 2;
-                    rib.position.y = hy - 0.26;
-                    group.add(rib);
-                });
-                // 顶部吊环底座
-                const jlTop = new THREE.Mesh(new THREE.CylinderGeometry(0.10, 0.10, 0.06, 14), accentMat);
-                jlTop.position.y = 0.44;
-                group.add(jlTop);
-                // 吊钩
-                const jlHook = new THREE.Mesh(new THREE.TorusGeometry(0.09 * featS, 0.022 * featS, 8, 16, Math.PI), accentMat);
-                jlHook.position.set(0, 0.56, 0);
-                group.add(jlHook);
-                // 底部流苏穗子
-                for (let i = 0; i < 3; i++) {
-                    const ang = (i / 3) * Math.PI * 2;
-                    const tassel = new THREE.Mesh(createCapsuleGeometry(0.022 * featS, 0.22 * featS, 6), accentMat);
-                    tassel.position.set(Math.cos(ang) * 0.08, -0.60, Math.sin(ang) * 0.08);
-                    group.add(tassel);
-                }
-                // 寿司卷整体（圆柱横截面展示）
-                const mkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 0.60, 32), mainMat);
-                mkBody.rotation.x = Math.PI / 2;
-                mkBody.rotation.y = 0.26;
-                group.add(mkBody);
-                // 外圈海苔
-                const mkNori = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.06 * featS, 8, 32), accentMat);
-                mkNori.rotation.x = Math.PI / 2;
-                mkNori.rotation.y = 0.26;
-                group.add(mkNori);
-                // 白色醋饭层
-                const mkRice = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.62, 28), mainMat);
-                mkRice.rotation.x = Math.PI / 2;
-                mkRice.rotation.y = 0.26;
-                group.add(mkRice);
-                // 中心三文鱼
-                const mkSalmon = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                mkSalmon.scale.set(0.14 * featS, 0.14 * featS, 0.32 * featS);
-                mkSalmon.rotation.y = 0.26;
-                group.add(mkSalmon);
-                // 黄瓜条
-                const mkCucumber = new THREE.Mesh(createCapsuleGeometry(0.06 * featS, 0.26 * featS, 8), accentMat);
-                mkCucumber.position.set(0.14, 0.14, 0);
-                mkCucumber.rotation.x = Math.PI / 2;
-                group.add(mkCucumber);
-                // 三脚架
-                for (let i = 0; i < 3; i++) {
-                    const ang = (i / 3) * Math.PI * 2 + Math.PI / 6;
-                    const leg = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.56 * featS, 8), accentMat);
-                    leg.position.set(Math.cos(ang) * 0.24, -0.52, Math.sin(ang) * 0.24);
-                    leg.rotation.x = Math.sin(ang) * 0.42;
-                    leg.rotation.z = -Math.cos(ang) * 0.42;
-                    group.add(leg);
-                }
-                // 赤道仪云台
-                const tsMount = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                tsMount.scale.setScalar(0.14 * featS);
-                tsMount.position.y = -0.26;
-                group.add(tsMount);
-                // 粗长圆筒镜身（倾斜朝天）
-                const tsTube = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.16, 0.76, 20), mainMat);
-                tsTube.position.set(-0.08, 0.10, 0);
-                tsTube.rotation.z = -0.46;
-                group.add(tsTube);
-                // 大物镜端
-                const tsObj = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.08, 20), accentMat);
-                tsObj.position.set(-0.42, -0.16, 0);
-                tsObj.rotation.z = -0.46;
-                group.add(tsObj);
-                // 细目镜端
-                const tsEye = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.14, 0.14, 16), accentMat);
-                tsEye.position.set(0.26, 0.38, 0);
-                tsEye.rotation.z = -0.46;
-                group.add(tsEye);
-                // 车身主体
-                const vsBodyShape = new THREE.Shape();
-                vsBodyShape.moveTo(-0.42, -0.22);
-                vsBodyShape.bezierCurveTo(-0.44, 0.10, -0.28, 0.42, 0.0, 0.46);
-                vsBodyShape.bezierCurveTo(0.28, 0.42, 0.42, 0.14, 0.40, -0.10);
-                vsBodyShape.bezierCurveTo(0.28, -0.26, 0.10, -0.28, -0.10, -0.26);
-                vsBodyShape.lineTo(-0.42, -0.22);
-                vsBodyShape.closePath();
-                const vsBodyGeo = new THREE.ExtrudeGeometry(vsBodyShape, {
-                    depth: 0.30, bevelEnabled: true, bevelSegments: 6, steps: 1, bevelSize: 0.08, bevelThickness: 0.08
-                });
-                vsBodyGeo.center();
-                group.add(new THREE.Mesh(vsBodyGeo, mainMat));
-                // 前轮
-                const vsFW = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.07 * featS, 10, 24), accentMat);
-                vsFW.position.set(-0.34, -0.42, 0);
-                group.add(vsFW);
-                // 后轮
-                const vsRW = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.07 * featS, 10, 24), accentMat);
-                vsRW.position.set(0.34, -0.44, 0);
-                group.add(vsRW);
-                // 圆润大灯
-                const vsLight = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                vsLight.scale.set(0.14 * featS, 0.12 * featS, 0.10 * featS);
-                vsLight.position.set(-0.42, 0.14, 0.14);
-                group.add(vsLight);
-                // 车把
-                const vsBar = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.42 * featS, 8), accentMat);
-                vsBar.position.set(-0.14, 0.44, 0);
-                vsBar.rotation.z = Math.PI / 2;
-                group.add(vsBar);
-                // 粗壮主干
-                const crTrunk = new THREE.Mesh(createCapsuleGeometry(0.072 * featS, 0.46 * featS, 12), mainMat);
-                crTrunk.position.y = -0.26;
-                group.add(crTrunk);
-                // 底部基盘
-                const crBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.10, 20), mainMat);
-                crBase.position.y = -0.52;
-                group.add(crBase);
-                // 二级分叉枝
-                [[-0.28, 0.12, 0.08, -0.42], [0.26, 0.10, 0.10, 0.44],
-                 [-0.14, 0.14, -0.16, -0.26], [0.12, 0.16, -0.14, 0.26]].forEach(([bx, by, bz, brot]) => {
-                    const branch = new THREE.Mesh(createCapsuleGeometry(0.048 * featS, 0.38 * featS, 10), mainMat);
-                    branch.position.set(bx, by, bz);
-                    branch.rotation.z = brot * 0.5;
-                    branch.rotation.x = bz * 0.5;
-                    group.add(branch);
-                    // 末梢圆润指尖
-                    const tip = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-                    tip.position.set(bx + Math.sin(brot) * 0.14, by + 0.22, bz + Math.cos(brot) * 0.08);
-                    tip.scale.setScalar(0.07 * featS);
-                    group.add(tip);
-                });
-                // 三级小枝
-                for (let i = 0; i < 6; i++) {
-                    const ang = (i / 6) * Math.PI * 2;
-                    const twig = new THREE.Mesh(createCapsuleGeometry(0.030 * featS, 0.24 * featS, 8), accentMat);
-                    twig.position.set(Math.cos(ang) * 0.36, 0.22, Math.sin(ang) * 0.20);
-                    twig.rotation.z = Math.cos(ang) * 0.60;
-                    twig.rotation.x = Math.sin(ang) * 0.60;
-                    group.add(twig);
-                }
-
             }
 
             return group;
         }
-

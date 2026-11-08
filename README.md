@@ -1,21 +1,25 @@
-# SPRITE.3D · 179 款原创高辨识度 3D 精灵图鉴与 App 图标工坊
+# SPRITE.3D · 178 款原创高辨识度 3D 精灵图鉴与 App 图标工坊
 
 <p align="center">
-  <img src="./assets/banner.svg" alt="SPRITE.3D - 179 Original 3D Sprites & Icon Workshop" width="100%">
+  <img src="./assets/banner.svg" alt="SPRITE.3D - Procedural 3D Sprites Banner" width="100%">
+</p>
+
+<p align="center">
+  <img src="./assets/showcase.png" alt="SPRITE.3D - All 178 Procedural 3D Models Showcase" width="100%">
 </p>
 
 [![Three.js](https://img.shields.io/badge/Three.js-r128-black?logo=three.js)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![WebGL](https://img.shields.io/badge/WebGL-2.0-orange?logo=webgl)](https://get.webgl.org/)
-[![Sprites](https://img.shields.io/badge/Original%20Sprites-179%E6%AC%BE-emerald)](#)
+[![Sprites](https://img.shields.io/badge/Original%20Sprites-178%E6%AC%BE-emerald)](#)
 
-> **SPRITE.3D** 是一套基于 **Three.js** 与现代前端技术构建的原创 3D 精灵图鉴与 App 潮玩图标工坊。项目包含 **179 款程序化 3D 几何精灵**，集成自定义 **2-Tone Cel-Shading 双色平滑阶跃卡通着色器**、二阶物理阻尼动画、目光注视跟随、自由捏模工坊以及 **1024px 高清透明 PNG 与圆角 App 图标实时导出**。
+> **SPRITE.3D** 是一套基于 **Three.js** 与现代前端技术构建的原创 3D 精灵图鉴与 App 潮玩图标工坊。项目包含 **178 款程序化 3D 几何精灵**，集成自定义 **2-Tone Cel-Shading 双色平滑阶跃卡通着色器**、二阶物理阻尼动画、目光注视跟随、自由捏模工坊以及 **1024px 高清透明 PNG 与圆角 App 图标实时导出**。
 
 ---
 
 ## 🌟 核心亮点与特色
 
-- 🎨 **179 款纯程序化 3D 建模**：涵盖日常器物、美味食光、自然生灵、潮玩艺术、奇幻冒险、数智科技、职业职能等 8 大精选分类。
+- 🎨 **178 款纯程序化 3D 建模**：涵盖日常器物、美味食光、自然生灵、潮玩艺术、奇幻冒险、数智科技、职业职能等 8 大精选分类。
 - 🧪 **2-Tone Cel-Shading 双色卡通材质**：纯 GLSL 实现的平滑阶跃材质与轮廓微光（Rim Light），杜绝传统 3D 高光的脏灰过渡，完美呈现潮玩公仔和扁平 3D App 图标质感。
 - ⚡ **单 WebGLRenderer 全局驱动**：利用 WebGL Scissor Test 视口动态剪裁，以单 Canvas 驱动数百个独立 3D 视口，内存占用极低，杜绝浏览器 Context 崩溃。
 - 🎯 **二阶物理果冻回弹与目光注视**：集成二阶弹性阻尼算法（Spring & Damping），形体受击时呈现体积守恒果冻变形；正交相机投射让精灵瞳孔灵动注视光标，并自主规律眨眼。
@@ -43,7 +47,7 @@ sprite-3d/
     ├── config/                  # 数据字典与分类配置层
     │   ├── palettes.js          # 12 款潮玩高饱和度双色调色板
     │   ├── addons.js            # 8 款外挂头饰配置
-    │   └── sprites-data.js      # 179 款原创精灵初始数据与 8 维分类分类法 (Taxonomy)
+    │   └── sprites-data.js      # 178 款原创精灵初始数据与 8 维分类分类法 (Taxonomy)
     ├── core/                    # 3D 核心渲染引擎
     │   ├── materials.js         # 自定义 2-Tone Cel-Shading 双色阶跃卡通着色器
     │   ├── geometries.js        # 通用基础几何体缓存池与生成器
@@ -54,7 +58,7 @@ sprite-3d/
     │   ├── flagship-cloud.js    # #01 旗舰云宝 Nimbus 黄金分割多层云峰生成器
     │   ├── eyes-builder.js      # 眼睛与神态生成器
     │   ├── addons-builder.js    # 外挂头饰几何体生成器
-    │   └── species-mesh.js      # 179 款原创物种形体的程序化几何体组装器
+    │   └── species-mesh.js      # 178 款原创物种形体的程序化几何体组装器
     └── ui/                      # 视图交互与事件控制层
         ├── toast.js             # 浮动轻提示 Toast
         ├── toolbar.js           # 顶部工具栏与视角控制

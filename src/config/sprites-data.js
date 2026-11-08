@@ -1,4 +1,4 @@
-// 179款原创高辨识度 3D 精灵多维分类体系
+// 178款原创高辨识度 3D 精灵多维分类体系
 export const SPRITE_CATEGORIES = [
     { key: 'all', name: '全部' },
     { key: '日常器物', name: '日常器物' },
@@ -22,7 +22,7 @@ export function getSpriteTaxonomy(item) {
     return '日常器物';
 }
 
-// 179款原创高辨识度 3D 精灵图鉴数据定义
+// 178款原创高辨识度 3D 精灵图鉴数据定义
 export const INITIAL_SPRITES = [
             // ================= 旗舰 #01：纯粹经典版「云宝 Nimbus」 =================
             {
@@ -2059,15 +2059,4 @@ export const INITIAL_SPRITES = [
                 eyeY: 0.14, eyeZ: 0.46, eyeGap: 0.20, eyeScale: 1.0, eyeType: 'pill',
                 sx: 1.0, sy: 1.0, sz: 1.0, featScale: 1.0, addon: 'none'
             },
-            {
-                id: 179,
-                groupTag: 'creative20',
-                species: 'foodPretzel',
-                name: '椒盐卷饼 Pretzel',
-                category: '零食 · 德式',
-                desc: '德国街头经典圈结面包：两股面团交叉扭结成独特蝴蝶结形状，表面撒满粗盐粒，色泽金褐香气扑鼻',
-                paletteIdx: 7,
-                eyeY: 0.06, eyeZ: 0.46, eyeGap: 0.21, eyeScale: 1.0, eyeType: 'pill',
-                sx: 1.0, sy: 1.0, sz: 1.0, featScale: 1.0, addon: 'none'
-            }
         ];;

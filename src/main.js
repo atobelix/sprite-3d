@@ -41,6 +41,7 @@ export function bootSpriteUniverse() {
         setGlobalViewAngleMode: (mode) => { state.viewAngleMode = mode; },
         getVisibleCloudIndices: () => (sculptorApi ? sculptorApi.getVisibleCloudIndices() : [])
     };
+    window.__SPRITE_STATE__ = state;
 
     const mouseNDC = new THREE.Vector2(0, 0);
 

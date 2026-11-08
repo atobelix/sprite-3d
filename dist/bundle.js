@@ -3482,25 +3482,6 @@ var SpriteUniverse = (() => {
       sz: 1,
       featScale: 1,
       addon: "none"
-    },
-    {
-      id: 179,
-      groupTag: "creative20",
-      species: "foodPretzel",
-      name: "\u6912\u76D0\u5377\u997C Pretzel",
-      category: "\u96F6\u98DF \xB7 \u5FB7\u5F0F",
-      desc: "\u5FB7\u56FD\u8857\u5934\u7ECF\u5178\u5708\u7ED3\u9762\u5305\uFF1A\u4E24\u80A1\u9762\u56E2\u4EA4\u53C9\u626D\u7ED3\u6210\u72EC\u7279\u8774\u8776\u7ED3\u5F62\u72B6\uFF0C\u8868\u9762\u6492\u6EE1\u7C97\u76D0\u7C92\uFF0C\u8272\u6CFD\u91D1\u8910\u9999\u6C14\u6251\u9F3B",
-      paletteIdx: 7,
-      eyeY: 0.06,
-      eyeZ: 0.46,
-      eyeGap: 0.21,
-      eyeScale: 1,
-      eyeType: "pill",
-      sx: 1,
-      sy: 1,
-      sz: 1,
-      featScale: 1,
-      addon: "none"
     }
   ];
 
@@ -5742,51 +5723,30 @@ var SpriteUniverse = (() => {
         group.add(seed);
       });
     } else if (sp === "foodAvocado") {
-      const skinMat = createCloudToonMaterial("#1A4D2E", "#0D2B1A", 0.22);
-      const fleshMat = createCloudToonMaterial("#D9F99D", "#BEF264", 0.18);
-      const pitMat = createCloudToonMaterial("#78350F", "#451A03", 0.26);
-      const skinShape = new THREE.Shape();
-      skinShape.moveTo(0, 0.62);
-      skinShape.bezierCurveTo(0.38, 0.62, 0.6, 0.1, 0.54, -0.32);
-      skinShape.bezierCurveTo(0.48, -0.66, -0.48, -0.66, -0.54, -0.32);
-      skinShape.bezierCurveTo(-0.6, 0.1, -0.38, 0.62, 0, 0.62);
-      const skinGeo = new THREE.ExtrudeGeometry(skinShape, {
-        depth: 0.28,
+      const avoShape = new THREE.Shape();
+      avoShape.moveTo(0, 0.6);
+      avoShape.bezierCurveTo(0.34, 0.6, 0.58, 0.06, 0.52, -0.34);
+      avoShape.bezierCurveTo(0.46, -0.62, -0.46, -0.62, -0.52, -0.34);
+      avoShape.bezierCurveTo(-0.58, 0.06, -0.34, 0.6, 0, 0.6);
+      const avoGeo = new THREE.ExtrudeGeometry(avoShape, {
+        depth: 0.22,
         bevelEnabled: true,
-        bevelSegments: 12,
+        bevelSegments: 10,
         steps: 1,
-        bevelSize: 0.11,
-        bevelThickness: 0.13
+        bevelSize: 0.1,
+        bevelThickness: 0.11
       });
-      skinGeo.center();
-      const skinMesh = new THREE.Mesh(skinGeo, skinMat);
-      skinMesh.position.z = -0.04;
-      group.add(skinMesh);
-      const fleshShape = new THREE.Shape();
-      fleshShape.moveTo(0, 0.56);
-      fleshShape.bezierCurveTo(0.33, 0.56, 0.52, 0.08, 0.46, -0.28);
-      fleshShape.bezierCurveTo(0.42, -0.58, -0.42, -0.58, -0.46, -0.28);
-      fleshShape.bezierCurveTo(-0.52, 0.08, -0.33, 0.56, 0, 0.56);
-      const fleshGeo = new THREE.ExtrudeGeometry(fleshShape, {
-        depth: 0.12,
-        bevelEnabled: true,
-        bevelSegments: 8,
-        steps: 1,
-        bevelSize: 0.04,
-        bevelThickness: 0.05
-      });
-      fleshGeo.center();
-      const fleshMesh = new THREE.Mesh(fleshGeo, fleshMat);
-      fleshMesh.position.z = 0.08;
-      group.add(fleshMesh);
-      const pit = new THREE.Mesh(SHARED_GEOS.sphere, pitMat);
-      pit.position.set(0, -0.16, 0.18);
-      pit.scale.set(0.32 * featS, 0.36 * featS, 0.26 * featS);
+      avoGeo.center();
+      group.add(new THREE.Mesh(avoGeo, mainMat));
+      const pit = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+      pit.position.set(0.04, -0.2, 0.18);
+      pit.scale.set(0.28 * featS, 0.28 * featS, 0.22 * featS);
       group.add(pit);
-      const glint = new THREE.Mesh(SHARED_GEOS.sphere, fleshMat);
-      glint.position.set(0.08, -0.06, 0.34);
-      glint.scale.setScalar(0.065 * featS);
-      group.add(glint);
+      const leaf = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+      leaf.position.set(0.16, 0.66, 0);
+      leaf.rotation.z = -0.5;
+      leaf.scale.set(0.18 * featS, 0.09 * featS, 0.08 * featS);
+      group.add(leaf);
     } else if (sp === "foodMushroom") {
       const capMat = createCloudToonMaterial("#DC2626", "#991B1B", 0.22);
       const stalkMat = createCloudToonMaterial("#FAFAFA", "#E5E7EB", 0.18);
@@ -5827,32 +5787,39 @@ var SpriteUniverse = (() => {
         group.add(dot);
       });
     } else if (sp === "foodKiwi") {
-      const skinMat = createCloudToonMaterial("#78350F", "#451A03", 0.2);
-      const fleshMat = createCloudToonMaterial("#84CC16", "#4D7C0F", 0.18);
-      const coreMat = createCloudToonMaterial("#FEF9C3", "#FEF08A", 0.16);
-      const seedMat = createCloudToonMaterial("#1E293B", "#0F172A", 0.22);
-      const shell = new THREE.Mesh(SHARED_GEOS.sphere, skinMat);
-      shell.scale.set(0.62, 0.58, 0.44);
-      shell.position.z = -0.06;
-      group.add(shell);
-      const slice = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.58, 0.16, 36), fleshMat);
-      slice.rotation.x = Math.PI / 2;
-      slice.position.z = 0.08;
-      group.add(slice);
-      const core = new THREE.Mesh(SHARED_GEOS.sphere, coreMat);
-      core.position.set(0, -0.06, 0.18);
-      core.scale.set(0.18 * featS, 0.24 * featS, 0.08 * featS);
+      const kiwiShape = new THREE.Shape();
+      kiwiShape.absellipse(0, 0, 0.52, 0.56, 0, Math.PI * 2, false, 0);
+      const kiwiGeo = new THREE.ExtrudeGeometry(kiwiShape, {
+        depth: 0.2,
+        bevelEnabled: true,
+        bevelSegments: 10,
+        steps: 1,
+        bevelSize: 0.08,
+        bevelThickness: 0.09
+      });
+      kiwiGeo.center();
+      group.add(new THREE.Mesh(kiwiGeo, mainMat));
+      const rim = new THREE.Mesh(new THREE.TorusGeometry(0.55 * featS, 0.055 * featS, 12, 36), accentMat);
+      rim.position.z = 0.06;
+      group.add(rim);
+      const core = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+      core.position.set(0, -0.1, 0.14);
+      core.scale.set(0.16 * featS, 0.22 * featS, 0.08 * featS);
       group.add(core);
-      for (let i = 0; i < 10; i++) {
-        const ang = i / 10 * Math.PI * 2;
-        const rx = Math.cos(ang) * 0.28;
-        const ry = -0.06 + Math.sin(ang) * 0.32;
-        const seed = new THREE.Mesh(SHARED_GEOS.sphere, seedMat);
-        seed.position.set(rx, ry, 0.18);
-        seed.scale.set(0.024 * featS, 0.04 * featS, 0.022 * featS);
-        seed.rotation.z = ang;
+      for (let i = 0; i < 8; i++) {
+        const ang = -0.3 * Math.PI + i / 7 * 1.6 * Math.PI;
+        const rx = Math.cos(ang) * 0.27;
+        const ry = -0.1 + Math.sin(ang) * 0.29;
+        const seed = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+        seed.position.set(rx, ry, 0.16);
+        seed.scale.set(0.024 * featS, 0.038 * featS, 0.02 * featS);
+        seed.rotation.z = ang + Math.PI / 2;
         group.add(seed);
       }
+      const stem = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+      stem.position.set(0, 0.64, 0);
+      stem.scale.set(0.11 * featS, 0.06 * featS, 0.06 * featS);
+      group.add(stem);
     } else if (sp === "foodEggplant") {
       const egPts = [
         new THREE.Vector2(0.01, -0.56),
@@ -9525,494 +9492,76 @@ var SpriteUniverse = (() => {
         group.add(ring);
       });
     } else if (sp === "gameChessQueen") {
-      const qBase = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.44, 0.1, 24), mainMat);
-      qBase.position.y = -0.52;
-      group.add(qBase);
-      const qWaist = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.34, 0.26, 20), mainMat);
-      qWaist.position.y = -0.37;
-      group.add(qWaist);
-      const qNeck = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 0.18, 18), mainMat);
-      qNeck.position.y = -0.17;
-      group.add(qNeck);
-      const qBelly = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-      qBelly.scale.set(0.26 * featS, 0.22 * featS, 0.26 * featS);
-      qBelly.position.y = 0.02;
-      group.add(qBelly);
-      const qNeckTop = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.18, 16), mainMat);
-      qNeckTop.position.y = 0.22;
-      group.add(qNeckTop);
+      const baseBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.48, 0.1, 32), mainMat);
+      baseBottom.position.y = -0.52;
+      group.add(baseBottom);
+      const baseRing = new THREE.Mesh(new THREE.TorusGeometry(0.42 * featS, 0.045 * featS, 12, 32), accentMat);
+      baseRing.rotation.x = Math.PI / 2;
+      baseRing.position.y = -0.47;
+      group.add(baseRing);
+      const waistPts = [
+        new THREE.Vector2(0.01, -0.45),
+        new THREE.Vector2(0.34, -0.45),
+        new THREE.Vector2(0.24, -0.32),
+        new THREE.Vector2(0.16, -0.16),
+        new THREE.Vector2(0.14, -0.04),
+        new THREE.Vector2(0.18, 0.08),
+        new THREE.Vector2(0.24, 0.16),
+        new THREE.Vector2(0.01, 0.16)
+      ];
+      const waistGeo = new THREE.LatheGeometry(waistPts, 32);
+      group.add(new THREE.Mesh(waistGeo, mainMat));
+      const neckRing = new THREE.Mesh(new THREE.TorusGeometry(0.19 * featS, 0.04 * featS, 12, 32), accentMat);
+      neckRing.rotation.x = Math.PI / 2;
+      neckRing.position.y = 0.16;
+      group.add(neckRing);
       const qHead = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-      qHead.scale.setScalar(0.18 * featS);
-      qHead.position.y = 0.38;
+      qHead.scale.set(0.25 * featS, 0.23 * featS, 0.25 * featS);
+      qHead.position.y = 0.32;
       group.add(qHead);
-      const qCrown = new THREE.Mesh(SHARED_GEOS.starBadge, accentMat);
-      qCrown.position.y = 0.52;
-      qCrown.scale.setScalar(0.42 * featS);
-      group.add(qCrown);
-      const balloon = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-      balloon.scale.set(0.54 * featS, 0.68 * featS, 0.54 * featS);
-      balloon.position.y = 0.14;
-      group.add(balloon);
+      const crownBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.18, 0.06, 24), accentMat);
+      crownBase.position.y = 0.46;
+      group.add(crownBase);
       for (let i = 0; i < 6; i++) {
         const ang = i / 6 * Math.PI * 2;
-        const stripe = new THREE.Mesh(createRoundedRectExtrude(0.06 * featS, 0.82 * featS, 0.04, 0.03, 0.01), accentMat);
-        stripe.position.set(Math.cos(ang) * 0.5, 0.14, Math.sin(ang) * 0.5);
-        stripe.rotation.y = ang;
-        group.add(stripe);
+        const spike = new THREE.Mesh(new THREE.ConeGeometry(0.042 * featS, 0.14 * featS, 8), accentMat);
+        spike.position.set(Math.cos(ang) * 0.2, 0.54, Math.sin(ang) * 0.2);
+        spike.rotation.z = -Math.cos(ang) * 0.35;
+        spike.rotation.x = Math.sin(ang) * 0.35;
+        group.add(spike);
       }
-      for (let i = 0; i < 4; i++) {
-        const ang = i / 4 * Math.PI * 2 + Math.PI / 4;
-        const rope = new THREE.Mesh(createCapsuleGeometry(0.014 * featS, 0.36 * featS, 6), accentMat);
-        rope.position.set(Math.cos(ang) * 0.18, -0.3, Math.sin(ang) * 0.18);
-        rope.rotation.z = Math.cos(ang) * 0.3;
-        rope.rotation.x = Math.sin(ang) * 0.3;
-        group.add(rope);
-      }
-      const basket = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.18, 0.18, 10), accentMat);
-      basket.position.y = -0.5;
-      group.add(basket);
-      const vBodyShape = new THREE.Shape();
-      vBodyShape.moveTo(0, -0.54);
-      vBodyShape.bezierCurveTo(0.38, -0.54, 0.44, -0.28, 0.42, -0.08);
-      vBodyShape.bezierCurveTo(0.28, 0, 0, 0, 0, -0.02);
-      vBodyShape.bezierCurveTo(0, 0, -0.28, 0, -0.42, -0.08);
-      vBodyShape.bezierCurveTo(-0.44, -0.28, -0.38, -0.54, 0, -0.54);
-      vBodyShape.moveTo(0, -0.02);
-      vBodyShape.bezierCurveTo(-0.14, 0, -0.3, 0.1, -0.44, 0.08);
-      vBodyShape.bezierCurveTo(-0.46, -0.22, -0.38, -0.52, 0, -0.54);
-      vBodyShape.bezierCurveTo(0.38, -0.52, 0.46, -0.22, 0.44, 0.08);
-      vBodyShape.bezierCurveTo(0.3, 0.1, 0.14, 0.1, 0, 0.08);
-      vBodyShape.closePath();
-      const vBodyGeo = new THREE.ExtrudeGeometry(vBodyShape, {
-        depth: 0.14,
-        bevelEnabled: true,
-        bevelSegments: 6,
-        steps: 1,
-        bevelSize: 0.04,
-        bevelThickness: 0.04
-      });
-      vBodyGeo.center();
-      group.add(new THREE.Mesh(vBodyGeo, mainMat));
-      const vNeck = new THREE.Mesh(createRoundedRectExtrude(0.09 * featS, 0.42 * featS, 0.06, 0.08, 0.02), mainMat);
-      vNeck.position.set(0, 0.46, 0);
-      group.add(vNeck);
-      const vScroll = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      vScroll.scale.set(0.1 * featS, 0.1 * featS, 0.06 * featS);
-      vScroll.position.set(0, 0.72, 0);
-      group.add(vScroll);
-      [-0.16, 0.16].forEach((fx) => {
-        const fhole = new THREE.Mesh(createCapsuleGeometry(0.024 * featS, 0.16 * featS, 6), accentMat);
-        fhole.position.set(fx, -0.04, 0.09);
-        group.add(fhole);
-      });
-      const btCup = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.3, 0.78, 28), mainMat);
-      btCup.position.y = -0.14;
-      group.add(btCup);
-      for (let i = 0; i < 7; i++) {
-        const ang = i / 7 * Math.PI * 2;
-        const pearl = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        pearl.position.set(Math.cos(ang) * 0.18, -0.44, Math.sin(ang) * 0.18);
-        pearl.scale.setScalar(0.08 * featS);
-        group.add(pearl);
-      }
-      const btLid = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.04, 28), accentMat);
-      btLid.position.y = 0.26;
-      group.add(btLid);
-      const btStraw = new THREE.Mesh(createCapsuleGeometry(0.042 * featS, 0.72 * featS, 10), accentMat);
-      btStraw.position.set(0.18, 0.62, 0);
-      btStraw.rotation.z = -0.14;
-      group.add(btStraw);
-      const ltLeaf = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.56, 0.06, 32), mainMat);
-      ltLeaf.position.y = -0.52;
-      group.add(ltLeaf);
-      for (let i = 0; i < 6; i++) {
-        const ang = i / 6 * Math.PI * 2;
-        const petal = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-        petal.position.set(Math.cos(ang) * 0.3, -0.14, Math.sin(ang) * 0.3);
-        petal.scale.set(0.14 * featS, 0.26 * featS, 0.12 * featS);
-        petal.rotation.y = ang;
-        petal.rotation.z = Math.cos(ang) * 0.4 + 0.2;
-        petal.rotation.x = Math.sin(ang) * 0.4;
-        group.add(petal);
-      }
-      for (let i = 0; i < 4; i++) {
-        const ang = i / 4 * Math.PI * 2 + Math.PI / 8;
-        const inner = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        inner.position.set(Math.cos(ang) * 0.14, 0.14, Math.sin(ang) * 0.14);
-        inner.scale.set(0.1 * featS, 0.22 * featS, 0.09 * featS);
-        inner.rotation.y = ang;
-        inner.rotation.z = Math.cos(ang) * 0.2 + 0.1;
-        group.add(inner);
-      }
-      const ltPod = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      ltPod.scale.set(0.16 * featS, 0.14 * featS, 0.16 * featS);
-      ltPod.position.y = 0.26;
-      group.add(ltPod);
-      const diceGeo = createRoundedRectExtrude(0.76, 0.76, 0.76, 0.76, 0.14);
-      diceGeo.center();
-      group.add(new THREE.Mesh(diceGeo, mainMat));
-      [
-        [-0.18, 0.18, 0.4],
-        [0, 0, 0.4],
-        [0.18, -0.18, 0.4],
-        [0, 0.4, 0],
-        [0.4, 0.14, -0.14],
-        [0.4, -0.14, 0.14]
-      ].forEach(([dx, dy, dz]) => {
-        const dot = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        dot.position.set(dx, dy, dz);
-        dot.scale.setScalar(0.07 * featS);
-        group.add(dot);
-      });
+      const pearl = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
+      pearl.scale.setScalar(0.085 * featS);
+      pearl.position.y = 0.54;
+      group.add(pearl);
     } else if (sp === "foodIceCreamSundae") {
-      const icBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.08, 20), accentMat);
-      icBase.position.y = -0.56;
+      const icBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 0.08, 24), accentMat);
+      icBase.position.y = -0.54;
       group.add(icBase);
-      const icStem = new THREE.Mesh(createCapsuleGeometry(0.05 * featS, 0.26 * featS, 10), accentMat);
-      icStem.position.y = -0.42;
+      const icStem = new THREE.Mesh(createCapsuleGeometry(0.05 * featS, 0.24 * featS, 10), accentMat);
+      icStem.position.y = -0.4;
       group.add(icStem);
-      const icCup = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.18, 0.44, 24), accentMat);
-      icCup.position.y = -0.16;
+      const icCup = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.2, 0.46, 28), accentMat);
+      icCup.position.y = -0.14;
       group.add(icCup);
-      [[-0.08, 0.14], [0.1, 0.36]].forEach(([ex, ey]) => {
+      [[-0.08, 0.16, 0.04], [0.1, 0.36, -0.02]].forEach(([ex, ey, ez]) => {
         const scoop = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-        scoop.position.set(ex, ey, 0);
-        scoop.scale.set(0.26 * featS, 0.24 * featS, 0.26 * featS);
+        scoop.position.set(ex, ey, ez);
+        scoop.scale.set(0.28 * featS, 0.25 * featS, 0.28 * featS);
         group.add(scoop);
       });
       const icCherry = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      icCherry.position.set(0.08, 0.6, 0);
-      icCherry.scale.setScalar(0.09 * featS);
+      icCherry.position.set(0.08, 0.62, 0.06);
+      icCherry.scale.setScalar(0.095 * featS);
       group.add(icCherry);
-      const icStalk = new THREE.Mesh(createCapsuleGeometry(0.014 * featS, 0.14 * featS, 6), accentMat);
-      icStalk.position.set(0.08, 0.72, 0);
+      const icStalk = new THREE.Mesh(createCapsuleGeometry(0.015 * featS, 0.14 * featS, 6), accentMat);
+      icStalk.position.set(0.12, 0.74, 0.06);
+      icStalk.rotation.z = -0.3;
       group.add(icStalk);
-      const icWafer = new THREE.Mesh(createRoundedRectExtrude(0.06 * featS, 0.42 * featS, 0.03, 0.04, 0.01), accentMat);
-      icWafer.position.set(-0.14, 0.44, 0.1);
-      icWafer.rotation.z = 0.26;
+      const icWafer = new THREE.Mesh(createRoundedRectExtrude(0.055 * featS, 0.44 * featS, 0.03, 0.04, 0.01), accentMat);
+      icWafer.position.set(-0.16, 0.42, 0.12);
+      icWafer.rotation.z = 0.28;
       group.add(icWafer);
-      const cCore = new THREE.Mesh(SHARED_GEOS.sphere, mainMat);
-      cCore.scale.set(0.26 * featS, 0.2 * featS, 0.22 * featS);
-      cCore.position.set(0.14, 0.14, 0);
-      group.add(cCore);
-      const tailPts = [
-        new THREE.Vector3(0.14, 0.14, 0),
-        new THREE.Vector3(-0.04, -0.04, 0),
-        new THREE.Vector3(-0.26, -0.28, 0),
-        new THREE.Vector3(-0.52, -0.56, 0)
-      ];
-      [0.09, 0.06, 0.04].forEach((r, i) => {
-        const tailSeg = new THREE.Mesh(
-          new THREE.TubeGeometry(new THREE.CatmullRomCurve3(tailPts.slice(i, i + 2)), 8, r * featS, 10, false),
-          accentMat
-        );
-        group.add(tailSeg);
-      });
-      const cGlow = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      cGlow.scale.setScalar(0.34 * featS);
-      cGlow.position.set(0.14, 0.14, 0);
-      group.add(cGlow);
-    } else if (sp === "foodPretzel") {
-      [-0.26, 0.26].forEach((rx) => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.085 * featS, 10, 24), mainMat);
-        ring.position.set(rx, 0.06, 0);
-        group.add(ring);
-      });
-      const pzCross1 = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.52 * featS, 10), mainMat);
-      pzCross1.position.set(0, 0.06, 0);
-      pzCross1.rotation.z = 0.9;
-      group.add(pzCross1);
-      const pzCross2 = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.52 * featS, 10), mainMat);
-      pzCross2.position.set(0, 0.06, 0);
-      pzCross2.rotation.z = -0.9;
-      group.add(pzCross2);
-      [-0.18, 0.18].forEach((tx) => {
-        const tail = new THREE.Mesh(createCapsuleGeometry(0.075 * featS, 0.26 * featS, 8), mainMat);
-        tail.position.set(tx, -0.3, 0);
-        tail.rotation.z = tx > 0 ? 0.26 : -0.26;
-        group.add(tail);
-      });
-      for (let i = 0; i < 8; i++) {
-        const ang = i / 8 * Math.PI * 2;
-        const salt = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        salt.position.set(Math.cos(ang) * 0.2, Math.sin(ang) * 0.1 + 0.06, 0.09);
-        salt.scale.setScalar(0.03 * featS);
-        group.add(salt);
-      }
-      const ocBodyShape = new THREE.Shape();
-      ocBodyShape.moveTo(0, 0.28);
-      ocBodyShape.lineTo(0.44, -0.08);
-      ocBodyShape.lineTo(0, -0.26);
-      ocBodyShape.lineTo(-0.44, -0.08);
-      ocBodyShape.closePath();
-      const ocBodyGeo = new THREE.ExtrudeGeometry(ocBodyShape, {
-        depth: 0.14,
-        bevelEnabled: true,
-        bevelSegments: 4,
-        steps: 1,
-        bevelSize: 0.04,
-        bevelThickness: 0.04
-      });
-      ocBodyGeo.center();
-      group.add(new THREE.Mesh(ocBodyGeo, mainMat));
-      [-1, 1].forEach((side) => {
-        const wingShape = new THREE.Shape();
-        wingShape.moveTo(0, 0);
-        wingShape.lineTo(side * 0.52, 0.18);
-        wingShape.lineTo(side * 0.6, 0);
-        wingShape.lineTo(side * 0.44, -0.22);
-        wingShape.closePath();
-        const wingGeo = new THREE.ExtrudeGeometry(wingShape, {
-          depth: 0.04,
-          bevelEnabled: true,
-          bevelSegments: 3,
-          steps: 1,
-          bevelSize: 0.02,
-          bevelThickness: 0.02
-        });
-        wingGeo.center();
-        const wing = new THREE.Mesh(wingGeo, mainMat);
-        wing.position.set(side * 0.26, 0.04, 0);
-        group.add(wing);
-      });
-      const ocNeck = new THREE.Mesh(createCapsuleGeometry(0.04 * featS, 0.36 * featS, 8), accentMat);
-      ocNeck.position.set(0.08, 0.32, 0);
-      ocNeck.rotation.z = -0.52;
-      group.add(ocNeck);
-      const ocHead = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      ocHead.position.set(0.22, 0.52, 0);
-      ocHead.scale.setScalar(0.09 * featS);
-      group.add(ocHead);
-      const ocTail = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.26 * featS, 6), accentMat);
-      ocTail.position.set(-0.08, -0.26, 0);
-      ocTail.rotation.z = 0.44;
-      group.add(ocTail);
-      const msBase = new THREE.Mesh(createRoundedRectExtrude(0.68, 0.18, 0.44, 0.22, 0.08), mainMat);
-      msBase.position.y = -0.54;
-      group.add(msBase);
-      const msArmPts = [
-        new THREE.Vector3(0, -0.42, 0.1),
-        new THREE.Vector3(0, -0.1, 0.08),
-        new THREE.Vector3(-0.08, 0.14, 0.04),
-        new THREE.Vector3(0, 0.44, 0)
-      ];
-      const msArm = new THREE.Mesh(
-        new THREE.TubeGeometry(new THREE.CatmullRomCurve3(msArmPts), 16, 0.07 * featS, 12, false),
-        mainMat
-      );
-      group.add(msArm);
-      const msStage = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.05, 20), accentMat);
-      msStage.position.set(0, -0.14, 0.08);
-      group.add(msStage);
-      const msTube1 = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.26, 16), accentMat);
-      msTube1.position.set(0, 0.6, 0);
-      group.add(msTube1);
-      const msTube2 = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.22, 14), mainMat);
-      msTube2.position.set(0, 0.8, 0);
-      group.add(msTube2);
-      const msEye = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.07, 0.07, 14), accentMat);
-      msEye.position.set(0, 0.94, 0);
-      group.add(msEye);
-      const shStem = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.48, 20), mainMat);
-      shStem.position.y = -0.36;
-      group.add(shStem);
-      const shSkirt = new THREE.Mesh(new THREE.ConeGeometry(0.36, 0.12, 20, 1, true), accentMat);
-      shSkirt.position.y = -0.14;
-      group.add(shSkirt);
-      const capPts = [
-        new THREE.Vector2(0.01, 0),
-        new THREE.Vector2(0.44, 0.08),
-        new THREE.Vector2(0.54, 0.26),
-        new THREE.Vector2(0.42, 0.42),
-        new THREE.Vector2(0.14, 0.52),
-        new THREE.Vector2(0.01, 0.56)
-      ];
-      const shCap = new THREE.Mesh(new THREE.LatheGeometry(capPts, 32), mainMat);
-      shCap.position.y = -0.04;
-      group.add(shCap);
-      [
-        [0, 0.52, 0.18],
-        [0.26, 0.42, 0.26],
-        [-0.26, 0.42, 0.26],
-        [0.4, 0.28, 0.14],
-        [-0.4, 0.28, 0.14],
-        [0, 0.26, 0.56]
-      ].forEach(([dx, dy, dz]) => {
-        const spot = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        spot.position.set(dx, dy, dz);
-        spot.scale.setScalar(0.08 * featS);
-        group.add(spot);
-      });
-      const rkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.76, 24), mainMat);
-      rkBody.position.y = -0.04;
-      group.add(rkBody);
-      const rkNose = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.42, 24), accentMat);
-      rkNose.position.y = 0.57;
-      group.add(rkNose);
-      for (let i = 0; i < 3; i++) {
-        const ang = i / 3 * Math.PI * 2;
-        const finShape = new THREE.Shape();
-        finShape.moveTo(0, 0);
-        finShape.lineTo(0.28, -0.26);
-        finShape.lineTo(0.08, -0.42);
-        finShape.lineTo(0, -0.38);
-        finShape.closePath();
-        const finGeo = new THREE.ExtrudeGeometry(finShape, {
-          depth: 0.04,
-          bevelEnabled: true,
-          bevelSegments: 3,
-          steps: 1,
-          bevelSize: 0.02,
-          bevelThickness: 0.02
-        });
-        finGeo.center();
-        const fin = new THREE.Mesh(finGeo, accentMat);
-        fin.position.set(Math.cos(ang) * 0.24, -0.38, Math.sin(ang) * 0.24);
-        fin.rotation.y = ang;
-        group.add(fin);
-      }
-      const rkFlame = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.36, 18), accentMat);
-      rkFlame.position.y = -0.6;
-      rkFlame.rotation.z = Math.PI;
-      group.add(rkFlame);
-      const rkBadge = new THREE.Mesh(SHARED_GEOS.starBadge, accentMat);
-      rkBadge.position.set(0, 0.02, 0.28);
-      rkBadge.scale.setScalar(0.28 * featS);
-      group.add(rkBadge);
-      const jlPts = [
-        new THREE.Vector2(0.01, 0),
-        new THREE.Vector2(0.3, 0.04),
-        new THREE.Vector2(0.38, 0.22),
-        new THREE.Vector2(0.36, 0.42),
-        new THREE.Vector2(0.24, 0.56),
-        new THREE.Vector2(0.01, 0.62)
-      ];
-      const jlBody = new THREE.Mesh(new THREE.LatheGeometry(jlPts, 32), mainMat);
-      jlBody.position.y = -0.26;
-      group.add(jlBody);
-      [-0.1, 0.08, 0.26, 0.42].forEach((hy) => {
-        const rib = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.016 * featS, 6, 24), accentMat);
-        rib.rotation.x = Math.PI / 2;
-        rib.position.y = hy - 0.26;
-        group.add(rib);
-      });
-      const jlTop = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.06, 14), accentMat);
-      jlTop.position.y = 0.44;
-      group.add(jlTop);
-      const jlHook = new THREE.Mesh(new THREE.TorusGeometry(0.09 * featS, 0.022 * featS, 8, 16, Math.PI), accentMat);
-      jlHook.position.set(0, 0.56, 0);
-      group.add(jlHook);
-      for (let i = 0; i < 3; i++) {
-        const ang = i / 3 * Math.PI * 2;
-        const tassel = new THREE.Mesh(createCapsuleGeometry(0.022 * featS, 0.22 * featS, 6), accentMat);
-        tassel.position.set(Math.cos(ang) * 0.08, -0.6, Math.sin(ang) * 0.08);
-        group.add(tassel);
-      }
-      const mkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 0.6, 32), mainMat);
-      mkBody.rotation.x = Math.PI / 2;
-      mkBody.rotation.y = 0.26;
-      group.add(mkBody);
-      const mkNori = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.06 * featS, 8, 32), accentMat);
-      mkNori.rotation.x = Math.PI / 2;
-      mkNori.rotation.y = 0.26;
-      group.add(mkNori);
-      const mkRice = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.62, 28), mainMat);
-      mkRice.rotation.x = Math.PI / 2;
-      mkRice.rotation.y = 0.26;
-      group.add(mkRice);
-      const mkSalmon = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      mkSalmon.scale.set(0.14 * featS, 0.14 * featS, 0.32 * featS);
-      mkSalmon.rotation.y = 0.26;
-      group.add(mkSalmon);
-      const mkCucumber = new THREE.Mesh(createCapsuleGeometry(0.06 * featS, 0.26 * featS, 8), accentMat);
-      mkCucumber.position.set(0.14, 0.14, 0);
-      mkCucumber.rotation.x = Math.PI / 2;
-      group.add(mkCucumber);
-      for (let i = 0; i < 3; i++) {
-        const ang = i / 3 * Math.PI * 2 + Math.PI / 6;
-        const leg = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.56 * featS, 8), accentMat);
-        leg.position.set(Math.cos(ang) * 0.24, -0.52, Math.sin(ang) * 0.24);
-        leg.rotation.x = Math.sin(ang) * 0.42;
-        leg.rotation.z = -Math.cos(ang) * 0.42;
-        group.add(leg);
-      }
-      const tsMount = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      tsMount.scale.setScalar(0.14 * featS);
-      tsMount.position.y = -0.26;
-      group.add(tsMount);
-      const tsTube = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.16, 0.76, 20), mainMat);
-      tsTube.position.set(-0.08, 0.1, 0);
-      tsTube.rotation.z = -0.46;
-      group.add(tsTube);
-      const tsObj = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.08, 20), accentMat);
-      tsObj.position.set(-0.42, -0.16, 0);
-      tsObj.rotation.z = -0.46;
-      group.add(tsObj);
-      const tsEye = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.14, 0.14, 16), accentMat);
-      tsEye.position.set(0.26, 0.38, 0);
-      tsEye.rotation.z = -0.46;
-      group.add(tsEye);
-      const vsBodyShape = new THREE.Shape();
-      vsBodyShape.moveTo(-0.42, -0.22);
-      vsBodyShape.bezierCurveTo(-0.44, 0.1, -0.28, 0.42, 0, 0.46);
-      vsBodyShape.bezierCurveTo(0.28, 0.42, 0.42, 0.14, 0.4, -0.1);
-      vsBodyShape.bezierCurveTo(0.28, -0.26, 0.1, -0.28, -0.1, -0.26);
-      vsBodyShape.lineTo(-0.42, -0.22);
-      vsBodyShape.closePath();
-      const vsBodyGeo = new THREE.ExtrudeGeometry(vsBodyShape, {
-        depth: 0.3,
-        bevelEnabled: true,
-        bevelSegments: 6,
-        steps: 1,
-        bevelSize: 0.08,
-        bevelThickness: 0.08
-      });
-      vsBodyGeo.center();
-      group.add(new THREE.Mesh(vsBodyGeo, mainMat));
-      const vsFW = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.07 * featS, 10, 24), accentMat);
-      vsFW.position.set(-0.34, -0.42, 0);
-      group.add(vsFW);
-      const vsRW = new THREE.Mesh(new THREE.TorusGeometry(0.22 * featS, 0.07 * featS, 10, 24), accentMat);
-      vsRW.position.set(0.34, -0.44, 0);
-      group.add(vsRW);
-      const vsLight = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-      vsLight.scale.set(0.14 * featS, 0.12 * featS, 0.1 * featS);
-      vsLight.position.set(-0.42, 0.14, 0.14);
-      group.add(vsLight);
-      const vsBar = new THREE.Mesh(createCapsuleGeometry(0.032 * featS, 0.42 * featS, 8), accentMat);
-      vsBar.position.set(-0.14, 0.44, 0);
-      vsBar.rotation.z = Math.PI / 2;
-      group.add(vsBar);
-      const crTrunk = new THREE.Mesh(createCapsuleGeometry(0.072 * featS, 0.46 * featS, 12), mainMat);
-      crTrunk.position.y = -0.26;
-      group.add(crTrunk);
-      const crBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.1, 20), mainMat);
-      crBase.position.y = -0.52;
-      group.add(crBase);
-      [
-        [-0.28, 0.12, 0.08, -0.42],
-        [0.26, 0.1, 0.1, 0.44],
-        [-0.14, 0.14, -0.16, -0.26],
-        [0.12, 0.16, -0.14, 0.26]
-      ].forEach(([bx, by, bz, brot]) => {
-        const branch = new THREE.Mesh(createCapsuleGeometry(0.048 * featS, 0.38 * featS, 10), mainMat);
-        branch.position.set(bx, by, bz);
-        branch.rotation.z = brot * 0.5;
-        branch.rotation.x = bz * 0.5;
-        group.add(branch);
-        const tip = new THREE.Mesh(SHARED_GEOS.sphere, accentMat);
-        tip.position.set(bx + Math.sin(brot) * 0.14, by + 0.22, bz + Math.cos(brot) * 0.08);
-        tip.scale.setScalar(0.07 * featS);
-        group.add(tip);
-      });
-      for (let i = 0; i < 6; i++) {
-        const ang = i / 6 * Math.PI * 2;
-        const twig = new THREE.Mesh(createCapsuleGeometry(0.03 * featS, 0.24 * featS, 8), accentMat);
-        twig.position.set(Math.cos(ang) * 0.36, 0.22, Math.sin(ang) * 0.2);
-        twig.rotation.z = Math.cos(ang) * 0.6;
-        twig.rotation.x = Math.sin(ang) * 0.6;
-        group.add(twig);
-      }
     }
     return group;
   }
@@ -11069,6 +10618,7 @@ var SpriteUniverse = (() => {
       },
       getVisibleCloudIndices: () => sculptorApi ? sculptorApi.getVisibleCloudIndices() : []
     };
+    window.__SPRITE_STATE__ = state;
     const mouseNDC = new THREE.Vector2(0, 0);
     const SPRITES_DATA = JSON.parse(JSON.stringify(INITIAL_SPRITES));
     function getCategoryLabel(tag) {
